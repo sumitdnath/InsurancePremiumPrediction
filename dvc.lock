@@ -1,0 +1,65 @@
+schema: '2.0'
+stages:
+  load_data:
+    cmd: python src/load_data.py --config=params.yaml
+    deps:
+    - path: data_given/insurance_updated.csv
+      md5: e1fac0a3a0d50d4267a95dd6bcf192e4
+      size: 33728
+    - path: src/get_data.py
+      md5: 829c535445d3004bf45f4b69305dad51
+      size: 892
+    - path: src/load_data.py
+      md5: 4c9005cec11623b41c6a998004623b40
+      size: 471
+    outs:
+    - path: data/raw/insurance_updated.csv
+      md5: 6968720e83933d888e1af6ad741ee013
+      size: 33980
+  split_data:
+    cmd: python src/split_data.py --config=params.yaml
+    deps:
+    - path: data/raw/insurance_updated.csv
+      md5: 6968720e83933d888e1af6ad741ee013
+      size: 33980
+    - path: src/split_data.py
+      md5: 3902b3186de0a3d14951fe919586ab7d
+      size: 1189
+    outs:
+    - path: data/processed/test_insurance.csv
+      md5: 95d4edaedce41da7066de2bea8f5115d
+      size: 8547
+    - path: data/processed/train_insurance.csv
+      md5: cf3a776e83fe35c9cfc0c2c06ed8524f
+      size: 25478
+  train_evaluate:
+    cmd: python src/train_evaluate.py --config=params.yaml
+    deps:
+    - path: data/processed/test_insurance.csv
+      md5: 95d4edaedce41da7066de2bea8f5115d
+      size: 8547
+    - path: data/processed/train_insurance.csv
+      md5: cf3a776e83fe35c9cfc0c2c06ed8524f
+      size: 25478
+    - path: src/train_evaluate.py
+      md5: 8552d0c8c27301b2f9d39a3691a1fc8a
+      size: 3218
+    params:
+      params.yaml:
+        estimators.GradientBoostingRegressor.params.alpha: 0.8
+        estimators.GradientBoostingRegressor.params.ccp_alpha: 0.1
+        estimators.GradientBoostingRegressor.params.learning_rate: 0.1001
+        estimators.GradientBoostingRegressor.params.n_estimators: 100
+        estimators.GradientBoostingRegressor.params.tol: 0.0001
+        estimators.GradientBoostingRegressor.params.validation_fraction: 1e-06
+        estimators.GradientBoostingRegressor.params.verbose: 0
+    outs:
+    - path: reports/params.json
+      md5: 1bb950cb0b786b544047a929a4026b1d
+      size: 150
+    - path: reports/scores.json
+      md5: 084a3c4a8f3aa93cb8fa631728f13f50
+      size: 147
+    - path: saved_models/model.pkl
+      md5: 1626f745ea0305554e861dbf85793ffb
+      size: 173555

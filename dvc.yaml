@@ -1,0 +1,41 @@
+stages: #stages of dvc
+  #stage 1
+  load_data: #specifying path running 
+    cmd: python src/load_data.py --config=params.yaml #main .py path
+    deps: #dependencis
+    - src/get_data.py #location
+    - src/load_data.py #location
+    - data_given/insurance_updated.csv #root data location
+    outs: #outcomes after running this code
+    - data/raw/insurance_updated.csv
+    #stage 2
+  split_data:
+    cmd: python src/split_data.py --config=params.yaml
+    deps:
+    - src/split_data.py
+    - data/raw/insurance_updated.csv
+    outs:
+    - data/processed/train_insurance.csv
+    - data/processed/test_insurance.csv 
+    #stage 3
+  train_evaluate:
+    cmd: python src/train_evaluate.py --config=params.yaml
+    deps:
+    - data/processed/train_insurance.csv
+    - data/processed/test_insurance.csv 
+    - src/train_evaluate.py 
+    params:
+    - estimators.GradientBoostingRegressor.params.learning_rate
+    - estimators.GradientBoostingRegressor.params.n_estimators
+    - estimators.GradientBoostingRegressor.params.alpha
+    - estimators.GradientBoostingRegressor.params.verbose
+    - estimators.GradientBoostingRegressor.params.validation_fraction
+    - estimators.GradientBoostingRegressor.params.tol
+    - estimators.GradientBoostingRegressor.params.ccp_alpha
+    metrics:
+    - reports/scores.json:
+        cache: false
+    - reports/params.json:
+        cache: false
+    outs:
+    - saved_models/model.pkl
