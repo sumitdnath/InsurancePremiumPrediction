@@ -15,10 +15,6 @@ Gradient Boosting, Decision tree, Regression
 We have to build a solution that should able to predict the premium of the
 personal for health insurance
 
-DEPLOYED APPLICATION LINK:https://mlops-application.herokuapp.com/<br>
-<br>
-FOR DOCUMENTATION OF THIS PROJECT VISIT HERE:[DOCS](https://github.com/rohanpatankar926/internship_project/tree/main/docs)
-<br>
 ### STEPS ARE MENTIONED BELOW FOR MAKING THE ENTIRE PIPELINE
 step1 :
 ``` bash
@@ -145,14 +141,10 @@ For automation of the project create dir `.github\workflow\ci-cd.yaml` we used h
 
 
 ### Cloning this project 
-`git clone https://github.com/rohanpatankar926/internship_project.git`<br>
+`git clone https://github.com/sumitdnath/InsurancePremiumPrediction.git`<br>
 `cd project directory`
 `pip install -r requirements.txt`
 `python app.py`<br>
 All set now you cloned this project successfully
-<br>
-Author:Rohan patankar
-<br>
-For any queries related to ml/dl contact me <a href="mailto:rohanpatankar926@gmail.com?subject = Feedback&body = Message">rohanpatankar926@gmail.com</a>
 <br>
 ### Thank You
